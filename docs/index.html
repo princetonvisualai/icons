@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="ICONS: Influence Consensus for Vision-Language Data Selection">
+  <meta name="keywords" content="ICONS, Data Selection, Vision-Language, LLaVA">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ICONS: Influence Consensus for Vision-Language Data Selection</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <style>
+    body {
+      font-family: 'Google Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .title-section {
+      text-align: center;
+      padding: 40px 20px;
+      background: #e9ecef;
+    }
+
+    .title {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+
+    .authors {
+      font-size: 1.2em;
+      margin: 20px 0;
+    }
+
+    .author-block {
+      margin: 0 10px;
+    }
+
+    .author-block a {
+      color: #0056b3;
+      text-decoration: none;
+    }
+
+    .author-block a:hover {
+      text-decoration: underline;
+    }
+
+    .publication-links {
+      margin: 20px 0;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 5px;
+      border-radius: 5px;
+      background: #0056b3;
+      color: white;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    .button:hover {
+      background: #003d80;
+    }
+
+    .content-section {
+      padding: 40px 20px;
+    }
+
+    .figure-container {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .figure-container img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .caption {
+      font-style: italic;
+      color: #666;
+      margin-top: 10px;
+    }
+
+    .section-title {
+      font-size: 1.8em;
+      margin: 40px 0 20px;
+      color: #333;
+    }
+
+    .abstract {
+      background: #e9ecef;
+      padding: 20px;
+      border-radius: 5px;
+      margin: 20px 0;
+    }
+
+    .method-overview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .method-step {
+      flex: 1;
+      min-width: 300px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .citation-box {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 5px;
+      margin: 20px 0;
+      font-family: 'Consolas', monospace;
+      white-space: pre-wrap;
+      overflow-x: auto;
+    }
+
+    .acknowledgments {
+      background: #e9ecef;
+      padding: 20px;
+      border-radius: 5px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="title-section">
+    <div class="container">
+      <h1 class="title">ICONS: Influence Consensus for Vision-Language Data Selection</h1>
+      <div class="authors">
+        <span class="author-block"><a href="https://xindiwu.github.io/">Xindi Wu</a><sup>1</sup>,</span>
+        <span class="author-block"><a href="https://xiamengzhou.github.io/">Mengzhou Xia</a><sup>1</sup>,</span>
+        <span class="author-block"><a href="https://rulinshao.github.io/">Rulin Shao</a><sup>2</sup>,</span>
+        <span class="author-block"><a href="https://lucas2012.github.io/">Zhiwei Deng</a><sup>3</sup>,</span>
+        <span class="author-block"><a href="https://koh.pw/">Pang Wei Koh</a><sup>2,4</sup>,</span>
+        <span class="author-block"><a href="https://www.cs.princeton.edu/~olgarus/">Olga Russakovsky</a><sup>1</sup></span>
+      </div>
+      <div class="affiliations">
+        <span>1. Princeton University</span> |
+        <span>2. University of Washington</span> |
+        <span>3. Google DeepMind</span> |
+        <span>4. Allen Institute for AI</span>
+      </div>
+      <div class="publication-links">
+        <a href="https://arxiv.org/abs/xxx" class="button">
+          <i class="ai ai-arxiv"></i> Paper
+        </a>
+        <a href="https://github.com/princetonvisualai/icons" class="button">
+          <i class="fab fa-github"></i> Code
+        </a>
+        <p style="margin-top: 15px; color: #666;">Website under construction 🚧</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="content-section">
+      <div class="abstract">
+        <h2>Abstract</h2>
+        <p>Visual Instruction Tuning typically requires a large amount of vision-language training data. This data often contains redundant information that increases computational costs without proportional performance gains. We introduce ICONS, a gradient-driven Influence CONsensus approach for vision-language data Selection that selects a compact training dataset for efficient multi-task training. Using ICONS, we create LLAVA-ICONS-133K, a compact 20% subset of LLAVA-665K that maintains 98.6% of the original performance across multiple vision-language tasks.</p>
+      </div>
+
+      <div class="figure-container">
+        <img src="static/images/pipeline.png" alt="ICONS Pipeline">
+        <p class="caption">Overview of ICONS: Our two-stage approach combines specialist task-specific influence analysis with generalist consensus-based selection.</p>
+      </div>
+
+      <h2 class="section-title">Method Overview</h2>
+      <div class="method-overview">
+        <div class="method-step">
+          <h3>Stage 1: Specialist</h3>
+          <p>Computes task-specific influence scores through gradient-based analysis for each target task independently.</p>
+        </div>
+        <div class="method-step">
+          <h3>Stage 2: Generalist</h3>
+          <p>Implements consensus mechanism to identify training samples that show consistent positive value across multiple tasks.</p>
+        </div>
+      </div>
+
+      <h2 class="section-title">Citation</h2>
+      <div class="citation-box">@article{wu2024icons,
+    title={ICONS: Influence Consensus for Vision-Language Data Selection},
+    author={Wu, Xindi and Xia, Mengzhou and Shao, Rulin and Deng, Zhiwei and Koh, Pang Wei and Russakovsky, Olga},
+    journal={arXiv preprint arXiv:xxx},
+    year={2024}
+}</div>
+
+      <h2 class="section-title">Acknowledgments</h2>
+      <div class="acknowledgments">
+        <p>This material is based upon work supported by the National Science Foundation under Grant No. 2107048 and No.2112562. Any opinions, findings, and conclusions, or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.</p>
+        <p>This work is also supported by the Singapore National Research Foundation and the National AI Group in the Singapore Ministry of Digital Development and Information under the AI Visiting Professorship Programme (award number AIVP-2024-001).</p>
+        <p>We thank many people for their helpful discussion and feedback, listed in alphabetical order by last name: Allison Chen, Hamish Ivison, Carlos E. Jimenez, Polina Kirichenko, Jaewoo Lee, Tiffany Ling, Zhiqiu Lin, Ethan Tseng, Shengbang Tong, Justin Wang, Zirui Wang.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
