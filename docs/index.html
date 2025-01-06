@@ -138,6 +138,26 @@
       border-radius: 5px;
       margin: 20px 0;
     }
+
+    /* Custom Hugging Face icon */
+    .fa-huggingface::before {
+      content: "🤗";  /* Using the hugging face emoji as a simple solution */
+    }
+
+    .icon-huggingface {
+      background-image: url('https://huggingface.co/front/assets/huggingface_logo.svg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      width: 24px;
+      height: 24px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .huggingface-small {
+      font-size: 14px;
+      vertical-align: middle;
+    }
   </style>
 </head>
 
@@ -160,11 +180,14 @@
         <span>4. Allen Institute for AI</span>
       </div>
       <div class="publication-links">
-        <a href="https://arxiv.org/abs/xxx" class="button">
+        <a href="https://arxiv.org/abs/2501.00654" class="button">
           <i class="ai ai-arxiv"></i> Paper
         </a>
         <a href="https://github.com/princetonvisualai/icons" class="button">
           <i class="fab fa-github"></i> Code
+        </a>
+        <a href="https://huggingface.co/datasets/xdiwu/LLaVA-ICONS-133K" class="button">
+          <span class="huggingface-small">🤗</span> Dataset
         </a>
         <p style="margin-top: 15px; color: #666;">Website under construction 🚧</p>
       </div>
@@ -175,15 +198,34 @@
     <div class="content-section">
       <div class="abstract">
         <h2>Abstract</h2>
-        <p>Visual Instruction Tuning typically requires a large amount of vision-language training data. This data often contains redundant information that increases computational costs without proportional performance gains. We introduce ICONS, a gradient-driven Influence CONsensus approach for vision-language data Selection that selects a compact training dataset for efficient multi-task training. Using ICONS, we create LLAVA-ICONS-133K, a compact 20% subset of LLAVA-665K that maintains 98.6% of the original performance across multiple vision-language tasks.</p>
+        <p>Visual Instruction Tuning typically requires a large amount of vision-language training data. This data often contains redundant information that increases computational costs without proportional performance gains.</p>
+        
+        <div style="display: flex; justify-content: space-between; gap: 20px; margin: 20px 0;">
+          <div style="flex: 1; background: #f8f9fa; padding: 15px; border-radius: 5px; min-width: 0;">
+            <h3 style="margin: 0 0 10px 0; font-size: 1.1em;">
+              <i class="fas fa-lightbulb" style="margin-right: 8px;"></i>Approach
+            </h3>
+            <p style="margin: 0;">The key element of our approach is cross-task influence consensus, which uses majority voting across task-specific influence matrices to identify samples that are consistently valuable across multiple tasks, allowing us to effectively prioritize data that optimizes for overall performance.</p>
+          </div>
+          
+          <div style="flex: 1; background: #f8f9fa; padding: 15px; border-radius: 5px; min-width: 0;">
+            <h3 style="margin: 0 0 10px 0; font-size: 1.1em;">
+              <i class="fas fa-chart-line" style="margin-right: 8px;"></i>Experiments
+            </h3>
+            <p style="margin: 0;">Experiments show that models trained on our selected data (20% of LLAVA-665K) achieve 98.6% of the relative performance obtained using the full dataset, and exceeds 102% of the full dataset performance at 60% selection ratio.</p>
+          </div>
+          
+          <div style="flex: 1; background: #f8f9fa; padding: 15px; border-radius: 5px; min-width: 0;">
+            <h3 style="margin: 0 0 10px 0; font-size: 1.1em;">
+              <i class="fas fa-database" style="margin-right: 8px;"></i>Artifact
+            </h3>
+            <p style="margin: 0;">We release this subset, LLAVA-ICONS-133K, a compact yet highly informative subset of LLAVA-665K visual instruction tuning data, preserving high impact training data for efficient vision-language model development.</p>
+          </div>
+        </div>
       </div>
 
-      <div class="figure-container">
-        <img src="static/images/pipeline.png" alt="ICONS Pipeline">
-        <p class="caption">Overview of ICONS: Our two-stage approach combines specialist task-specific influence analysis with generalist consensus-based selection.</p>
-      </div>
 
-      <h2 class="section-title">Method Overview</h2>
+      <h2 class="section-title">Method</h2>
       <div class="method-overview">
         <div class="method-step">
           <h3>Stage 1: Specialist</h3>
@@ -195,13 +237,101 @@
         </div>
       </div>
 
-      <!-- <h2 class="section-title">Citation</h2>
+      <div class="figure-container">
+        <img src="static/images/pipeline.png" alt="ICONS Pipeline">
+        <p class="caption">Overview of ICONS: Our two-stage approach combines specialist task-specific influence analysis with generalist consensus-based selection.</p>
+      </div>
+
+      <h2 class="section-title">Experiments</h2>
+      <div class="content-section">
+        <!-- Overview Stats -->
+        <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
+          <div style="flex: 1; min-width: 300px; background: #f8f9fa; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            <h3 style="margin-top: 0;">Key Performance Highlights</h3>
+            <ul style="margin: 0; padding-left: 20px;">
+              <li>98.6% relative performance using only 20% of training data</li>
+              <li>102% relative performance at 60% data selection</li>
+              <li>Effective across 10+ vision-language benchmarks</li>
+              <li>Strong generalization to unseen tasks and architectures</li>
+            </ul>
+          </div>
+          
+          <div style="flex: 1; min-width: 300px; background: #f8f9fa; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            <h3 style="margin-top: 0;">Evaluation Setup</h3>
+            <ul style="margin: 0; padding-left: 20px;">
+              <li>Dataset: LLaVA-665K for visual instruction tuning</li>
+              <li>Base Model: LLaVA-v1.5-7b-lora</li>
+              <li>Benchmarks: VQAv2, GQA, VizWiz, SQA-I, TextVQA, POPE, MME, MMBench (en/cn), LLaVA-Bench</li>
+              <li>Baselines: Random, CLIP-Score, EL2N, Perplexity, SemDeDup, D2-Pruning, Self-Sup, Self-Filter, COINCIDE</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Key Findings -->
+        <div style="margin-bottom: 30px;">
+          <h3>Key Findings</h3>
+          
+          <!-- Data Overlap Figure -->
+
+
+          <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+            <div style="flex: 1; min-width: 250px; background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #dee2e6;">
+              <h4 style="margin-top: 0; color: #0056b3;">From Specialist to Generalist</h4>
+              <p style="margin: 0;">Consensus across task-specific influence patterns identifies a compact, high-performing universal training set:</p>
+              <ul style="margin-top: 10px;">
+                <li>Only 1.33% average performance drop vs. specialist baselines</li>
+                <li>Some tasks improve under generalist selection (SQA-I: +1.43%, POPE: +1.04%)</li>
+                <li>Data overlap varies by task complexity: from 3.27% (VQAv2) to 24.21% (LLAVA-W Bench)</li>
+              </ul>
+              <div style="margin-top: 15px; text-align: center;">
+                <img src="static/images/6_data_overlap.png" alt="Data overlap between specialist and generalist selections" style="width: 100%; max-width: 400px; height: auto;">
+                <p style="color: #666; font-size: 0.9em; margin-top: 5px;">Data overlap between specialist and generalist selections across tasks</p>
+              </div>
+            </div>
+            
+            <div style="flex: 1; min-width: 250px; background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #dee2e6;">
+              <h4 style="margin-top: 0; color: #0056b3;">Selection Ratio Impact</h4>
+              <p style="margin: 0;">Performance across different data selection ratios:</p>
+              <ul style="margin-top: 10px;">
+                <li>Stronger performance compared with baselines in low-selection regime (5-20%)</li>
+                <li>Exceeds 100% relative performance at 60% selection</li>
+              </ul>
+              <div style="margin-top: 15px; text-align: center;">
+                <img src="static/images/3_progressive_line.png" alt="Progressive line plot showing selection ratio impact" style="width: 100%; max-width: 400px; height: auto;">
+                <p style="color: #666; font-size: 0.9em; margin-top: 5px;">Progressive performance across selection ratios</p>
+              </div>
+            </div>
+            
+            <div style="flex: 1; min-width: 250px; background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #dee2e6;">
+              <h4 style="margin-top: 0; color: #0056b3;">Cross-Task Influence Patterns</h4>
+              <p style="margin: 0;">Pairwise overlap analysis reveals:</p>
+              <ul style="margin-top: 10px;">
+                <li>High overlap in related tasks:
+                  <ul>
+                    <li>MMBench (en-cn): 67.4%</li>
+                    <li>POPE-GQA: 60.2%</li>
+                    <li>VQAv2-VizWiz: 49.0%</li>
+                  </ul>
+                </li>
+                <li>Low overlap between dissimilar tasks (e.g., MMBench-GQA: 3.3%)</li>
+                <li>Findings support using influence consensus for effective multi-task selection</li>
+              </ul>
+              <div style="margin-top: 15px; text-align: center;">
+                <img src="static/images/9_benchmark_heatmap.png" alt="Benchmark performance heatmap" style="width: 100%; max-width: 400px; height: auto;">
+                <p style="color: #666; font-size: 0.9em; margin-top: 5px;">Pairwise overlap heatmap across tasks</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="section-title">Citation</h2>
       <div class="citation-box">@article{wu2024icons,
     title={ICONS: Influence Consensus for Vision-Language Data Selection},
     author={Wu, Xindi and Xia, Mengzhou and Shao, Rulin and Deng, Zhiwei and Koh, Pang Wei and Russakovsky, Olga},
-    journal={arXiv preprint arXiv:xxx},
-    year={2024} -->
-<!-- }</div> -->
+    journal={arXiv preprint arXiv:2501.00654},
+    year={2024}
+}</div>
 
       <h2 class="section-title">Acknowledgments</h2>
       <div class="acknowledgments">
