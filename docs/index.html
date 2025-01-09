@@ -373,26 +373,26 @@
         <h2>Abstract</h2>
         <p>Visual Instruction Tuning typically requires a large amount of vision-language training data. This data often contains redundant information that increases computational costs without proportional performance gains.</p>
         
-        <div style="display: flex; justify-content: center; gap: 20px; margin: 20px 0; width: 100%; padding: 0 20px; box-sizing: border-box;">
-          <div style="flex: 1; background: #f8f9fa; padding: 15px; border-radius: 5px; min-width: 0;">
-            <h3 style="margin: 0 0 10px 0; font-size: 1.1em;">
+        <div style="display: flex; justify-content: center; gap: 15px; margin: 20px auto; max-width: 1000px;">
+          <div style="flex: 1; background: #f8f9fa; padding: 12px; border-radius: 5px; min-width: 0;">
+            <h3 style="margin: 0 0 8px 0; font-size: 1.1em;">
               <i class="fas fa-lightbulb" style="margin-right: 8px;"></i>Approach
             </h3>
-            <p style="margin: 0;">The key element of our approach is cross-task influence consensus, which uses majority voting across task-specific influence matrices to identify samples that are consistently valuable across multiple tasks, allowing us to effectively prioritize data that optimizes for overall performance.</p>
+            <p style="margin: 0; font-size: 0.9em;">The key element of our approach is cross-task influence consensus, which uses majority voting across task-specific influence matrices to identify samples that are consistently valuable across multiple tasks, allowing us to effectively prioritize data that optimizes for overall performance.</p>
           </div>
           
-          <div style="flex: 1; background: #f8f9fa; padding: 15px; border-radius: 5px; min-width: 0;">
-            <h3 style="margin: 0 0 10px 0; font-size: 1.1em;">
+          <div style="flex: 1; background: #f8f9fa; padding: 12px; border-radius: 5px; min-width: 0;">
+            <h3 style="margin: 0 0 8px 0; font-size: 1.1em;">
               <i class="fas fa-chart-line" style="margin-right: 8px;"></i>Experiments
             </h3>
-            <p style="margin: 0;">Experiments show that models trained on our selected data (20% of LLAVA-665K) achieve 98.6% of the relative performance obtained using the full dataset, and exceeds 102% of the full dataset performance at 60% selection ratio.</p>
+            <p style="margin: 0; font-size: 0.9em;">Experiments show that models trained on our selected data (20% of LLAVA-665K) achieve 98.6% of the relative performance obtained using the full dataset, and exceeds 102% of the full dataset performance at 60% selection.</p>
           </div>
           
-          <div style="flex: 1; background: #f8f9fa; padding: 15px; border-radius: 5px; min-width: 0;">
-            <h3 style="margin: 0 0 10px 0; font-size: 1.1em;">
+          <div style="flex: 1; background: #f8f9fa; padding: 12px; border-radius: 5px; min-width: 0;">
+            <h3 style="margin: 0 0 8px 0; font-size: 1.1em;">
               <i class="fas fa-database" style="margin-right: 8px;"></i>Artifact
             </h3>
-            <p style="margin: 0;">We release this subset, LLAVA-ICONS-133K, a compact yet highly informative subset of LLAVA-665K visual instruction tuning data, preserving high impact training data for efficient vision-language model development.</p>
+            <p style="margin: 0; font-size: 0.9em;">We release this subset, LLAVA-ICONS-133K, a compact yet highly informative subset of LLAVA-665K visual instruction tuning data, preserving high impact training data for efficient vision-language model development.</p>
           </div>
         </div>
       </div>
@@ -420,7 +420,7 @@
       </div>
 
       <div class="figure-container">
-        <img src="static/images/pipeline.png" alt="ICONS Pipeline">
+        <img src="static/images/pipeline.png" alt="ICONS Pipeline" style="max-width: 800px; width: 90%;">
         <p class="caption">Overview of ICONS: Our two-stage approach combines specialist task-specific influence analysis with generalist consensus-based selection.</p>
       </div>
 
