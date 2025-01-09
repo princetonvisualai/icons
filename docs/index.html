@@ -567,16 +567,16 @@
           </div>
         </div>
 
-        <!-- Transferability Section -->
-        <h2 class="section-title">Transferability</h2>
-        <div class="content-section" style="display: flex; gap: 20px; flex-wrap: wrap;">
-          <!-- Unseen-task Generalization -->
-          <div style="flex: 1; min-width: 300px; background: #f8f9fa; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-            <h3>Unseen-task Generalization</h3>
-            <ul>
-              <li>Evaluates transferability across unseen benchmarks.</li>
-              <li><strong>LLAVA-ICONS-133K</strong> achieves 95.5-113.9% relative performance. Outperforms random selection on all benchmarks.</li>
-            </ul>
+      <!--  Transferability section -->
+      <h2 class="section-title">Transferability</h2>
+      <div class="content-section">
+        <!-- Unseen-task Generalization -->
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; width: 100%;">
+          <h3>Unseen-task Generalization</h3>
+          <ul>
+            <li>Evaluates transferability across unseen benchmarks.</li>
+            <li><strong>LLAVA-ICONS-133K</strong> achieves 95.5-113.9% relative performance. Outperforms random selection on all benchmarks.</li>
+          </ul>
             <!-- Unseen-task Generalization Table -->
             <div style="overflow-x: auto;">
               <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px; font-size: 0.9em;">
@@ -646,16 +646,16 @@
                 </tbody>
               </table>
             </div>
-          </div>
+        </div>
 
-          <!-- Cross-Architecture-Scale Generalization -->
-          <div style="flex: 1; min-width: 300px; background: #f8f9fa; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-            <h3>Cross-Architecture-Scale Generalization</h3>
-            <ul>
-              <li>Tests transferability across different model scales.</li>
-              <li>Subset selected with <code>LLaVA-1.5-7B</code> remains effective for <code>LLaVA-1.5-13B</code>.</li>
-              <li>Achieves 98.1% relative performance, indicating universal value.</li>
-            </ul>
+        <!-- Cross-Architecture-Scale Generalization -->
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); width: 100%;">
+          <h3>Cross-Architecture-Scale Generalization</h3>
+          <ul>
+            <li>Tests transferability across different model scales.</li>
+            <li>Subset selected with <code>LLaVA-1.5-7B</code> remains effective for <code>LLaVA-1.5-13B</code>.</li>
+            <li>Achieves 98.1% relative performance, indicating universal value.</li>
+          </ul>
             <!-- Cross-Architecture-Scale Generalization Table -->
             <div style="overflow-x: auto;">
               <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px; font-size: 0.9em;">
@@ -735,8 +735,8 @@
                 </tbody>
               </table>
             </div>
-          </div>
         </div>
+      </div>
 
         <!-- Ablation Studies -->
         <div style="margin-bottom: 30px;">
@@ -1072,6 +1072,8 @@
           lightbox.style.display = 'none';
         }
       </script>
+
+
     </div>
   </div>
 </body>
