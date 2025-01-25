@@ -21,14 +21,43 @@ We propose ICONS, a method for selecting vision-language data that optimizes tra
 
 ## Installation
 
-To set up the environment for ICONS, you can use the provided `environment.yml` file to create a Conda environment:
+First, clone the repository and navigate to the project directory:
 
 ```bash
-conda env create -f environment.yml
-conda activate icons
+git clone https://github.com/princetonvisualai/icons.git
+cd icons
 ```
 
-## Usage
+To set up the environment for ICONS and LLaVA training (https://github.com/haotian-liu/LLaVA/), you can use the provided `environment.yml` file to create a Conda environment:
+
+```bash
+conda create -n icons python=3.10 -y
+conda activate icons
+pip install --upgrade pip
+pip install -e .
+pip install -e ".[train]"
+pip install flash-attn --no-build-isolation
+```
+
+
+## Dataset Download
+LLaVA-665K dataset is available on [Download Link](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/blob/main/llava_v1_5_mix665k.json).
+
+Cambrian-7M dataset is available on [Download Link](https://huggingface.co/datasets/nyu-visionx/Cambrian-10M/blob/main/jsons/Cambrian7M_withsystemprompt.jsonl).
+
+Then follow the original repo to download the image data.
+
+You can split them to random chunks for parallel gradient computation with slurm scripts. 
+
+```bash
+# Split the LLaVA-665K dataset into chunks
+python utils/split.py path/to/llava_v1_5_mix665k.json data/llava_665k_splits --num-splits 200
+
+# Split the Cambrian-7M dataset into chunks
+python utils/split.py path/to/Cambrian7M_withsystemprompt.jsonl data/cambrian_7m_splits --num-splits 2000
+```
+
+## Selection
 
 The ICONS pipeline consists of two main stages:
 
@@ -61,6 +90,70 @@ The ICONS pipeline consists of two main stages:
    ```bash
    bash ./scripts/4_generalist.sh
    ```
+
+## Training 
+We follow the training pipeline from [LLaVA's official repository](https://github.com/haotian-liu/LLaVA/) and use the selected data for training. The training script for LLaVA-1.5-7B is located in `./llava_train_scripts/finetune_lora.py`.
+
+Before training, download the required checkpoint files:
+
+> ⚠️ **Note**: We use the LLaVA model checkpoints from before the visual instruction tuning stage (i.e., before training on the 665K instruction data). These checkpoints only contain the pretrained vision-language alignment weights.
+
+<details>
+<summary>7B Vicuna Model + Projector Checkpoint Download</summary>
+
+```bash
+# Download the mm_projector.bin file for LLaVA-1.5-7B training
+mkdir -p checkpoints/llava-v1.5-mlp2x-336px-pretrain-vicuna-7b-v1.5
+
+wget https://huggingface.co/liuhaotian/llava-v1.5-mlp2x-336px-pretrain-vicuna-7b-v1.5/resolve/main/mm_projector.bin -P checkpoints/llava-v1.5-mlp2x-336px-pretrain-vicuna-7b-v1.5
+
+# Download Vicuna-7B-v1.5 base model
+git clone https://huggingface.co/lmsys/vicuna-7b-v1.5 checkpoints/vicuna-7b-v1.5
+```
+</details>
+
+<details>
+<summary>13B Vicuna Model + Projector Checkpoint Download</summary>
+
+```bash
+# Download the mm_projector.bin file for LLaVA-1.5-13B training
+mkdir -p checkpoints/llava-v1.5-mlp2x-336px-pretrain-vicuna-13b-v1.5
+
+wget https://huggingface.co/liuhaotian/llava-v1.5-mlp2x-336px-pretrain-vicuna-13b-v1.5/resolve/main/mm_projector.bin -P checkpoints/llava-v1.5-mlp2x-336px-pretrain-vicuna-13b-v1.5
+
+# Download Vicuna-13B-v1.5 base model
+git clone https://huggingface.co/lmsys/vicuna-13b-v1.5 checkpoints/vicuna-13b-v1.5
+```
+</details>
+
+<details>
+<summary>8B Llama-3 Model + Projector Checkpoint Download</summary>
+
+```bash
+# Download the mm_projector.bin file for LLaVA-Llama-3-8B training
+mkdir -p checkpoints/llava-llama-3-8b
+
+# Download Llama-3-8B base model
+git clone https://huggingface.co/xtuner/llava-llama-3-8b checkpoints/llava-llama-3-8b
+```
+</details>
+
+To start training with the LLaVA-1.5-7B model:
+```bash
+sh llava_train_scripts/7b_finetune_lora.sh
+```
+
+Follow the instructions in the terminal to set the data_path and output_dir.
+
+
+## Inference
+
+For inference after training with selected data, you can choose one of the following two options:
+
+1. Use the standard evaluation pipeline from [LLaVA's official evaluation script](https://github.com/haotian-liu/LLaVA/blob/main/docs/Evaluation.md).
+
+2. Use [lmms-eval](https://github.com/EvolvingLMMs-Lab/lmms-eval) for comprehensive evaluation, which supports the evaluation on dozens of public datasets and allows new dataset onboarding.
+
 
 
 ## Citation

@@ -1,0 +1,25 @@
+# Python
+__pycache__
+*.pyc
+*.egg-info
+dist
+
+
+# Log
+*.log
+*.log.*
+*.json
+*.jsonl
+*.wandb
+*.wandb/
+
+# Checkpoints
+checkpoints/
+output/
+
+# Cambrian
+llava_train_scripts/7b_finetune_lora_cambrian.sh
+llava_train_scripts/8b_finetune_lora.sh
+llava_train_scripts/13b_finetune_lora.sh
+
+
