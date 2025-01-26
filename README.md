@@ -16,7 +16,10 @@ We propose ICONS, a method for selecting vision-language data that optimizes tra
 
 ## Table of Contents
 - [Installation](#installation)
-- [Usage](#usage)
+- [Dataset Download](#dataset-download)
+- [Selection](#selection)
+- [Training](#training)
+- [Inference](#inference)
 - [Citation](#citation)
 
 ## Installation
