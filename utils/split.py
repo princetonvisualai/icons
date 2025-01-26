@@ -15,6 +15,7 @@ def save_chunk(chunk_data, output_dir, chunk_num):
         json.dump(chunk_data, f, indent=4)
 
 def process_chunk_with_indices(args):
+    # Unpack arguments
     chunk_indices, input_file, output_dir, chunk_num = args
     return process_chunk(chunk_indices, input_file, output_dir, chunk_num)
 
@@ -61,10 +62,18 @@ def split_json_file(input_file, output_dir, num_splits=2000):
         for i, indices in enumerate(chunk_indices)
     ]
     
+    cpu_count = os.cpu_count() 
+    # Use 90% of available CPUs to leave some headroom for system processes
+    num_workers = max(1, int(cpu_count * 0.9)) 
+    
+    print(f"\nUsing {num_workers} workers out of {cpu_count} available CPUs")
+    
+    chunk_size = 10  # Adjust this based on performance
+    
     print("\nProcessing chunks...")
-    with Pool() as pool:
+    with Pool(num_workers) as pool:
         results = list(tqdm(
-            pool.imap(process_chunk_with_indices, process_args),
+            pool.imap_unordered(process_chunk_with_indices, process_args, chunksize=chunk_size),
             total=num_splits,
             desc="Splitting files"
         ))
@@ -73,11 +82,10 @@ def split_json_file(input_file, output_dir, num_splits=2000):
     print(f"Created {len(results)} files in {output_dir}")
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Split a large JSON file into smaller chunks')
+    parser = argparse.ArgumentParser(description='Split a JSON file into multiple chunks')
     parser.add_argument('input_file', type=str, help='Path to the input JSON file')
-    parser.add_argument('output_dir', type=str, help='Directory to save the output chunks')
-    parser.add_argument('--num-splits', type=int, default=200,
-                        help='Number of splits to create (default: 200)')
+    parser.add_argument('output_dir', type=str, help='Directory to store the output chunks')
+    parser.add_argument('--num-splits', type=int, default=2000, help='Number of splits to create')
     
     args = parser.parse_args()
     
@@ -87,6 +95,6 @@ if __name__ == '__main__':
     start_time = time()
     
     split_json_file(args.input_file, args.output_dir, args.num_splits)
-
+    
     elapsed_time = time() - start_time
     print(f"\nTotal execution time: {elapsed_time:.2f} seconds")

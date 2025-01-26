@@ -47,13 +47,13 @@ Cambrian-7M dataset is available on [Download Link](https://huggingface.co/datas
 
 Then follow the original repo to download the image data.
 
-You can split them to random chunks for parallel gradient computation with slurm scripts. 
+You can split the data into random chunks for parallel gradient computation using slurm scripts. For efficient processing, request as many CPUs as possible (e.g., 96 CPUs), as the splitting operation is CPU-intensive and can be parallelized. For example to split the 7M Cambrian dataset into 3000 chunks with 96 CPUs takes about 15-20 minutes.
 
 ```bash
-# Split the LLaVA-665K dataset into chunks
+# Split the LLaVA-665K dataset into chunks (request 32+ CPUs for faster processing)
 python utils/split.py path/to/llava_v1_5_mix665k.json data/llava_665k_splits --num-splits 200
 
-# Split the Cambrian-7M dataset into chunks
+# Split the Cambrian-7M dataset into chunks (request 32+ CPUs for faster processing)
 python utils/split.py path/to/Cambrian7M_withsystemprompt.jsonl data/cambrian_7m_splits --num-splits 2000
 ```
 
