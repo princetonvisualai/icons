@@ -15,7 +15,7 @@ def check_missing_chunks(base_dir):
         else:
             missing_chunks.append(chunk_id)
 
-    output_file = "./cambrian_missing_chunks_report.txt"
+    output_file = "./missing_chunks_report.txt"
     with open(output_file, "w") as f:
         if missing_files_chunks:
             f.write("Chunks without 'all_normalized.pt':\n")
