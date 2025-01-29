@@ -1,33 +1,27 @@
 #!/bin/bash
 
-
-read -p "Which checkpoint do you want to use? (100, 200, ..., 1000): " checkpoint
-model="./checkpoints/llava_lora_full/checkpoint-$checkpoint"
-
-
-read -p "Is this the path you wanted? $model (y/n): " confirm_model
-if [[ $confirm_model != "y" ]]; then
-    read -p "Please enter the correct model path: " model
-fi
+read -p "Please enter the model path: " model
+read -p "Please enter the data directory path [default: /n/fs/visualai-scr/Data/llava/eval]: " data_path
+data_path=${data_path:-"/n/fs/visualai-scr/Data/llava/eval"}
 
 dims='5120'
 current_date=$(date +"%m%d")
 
 declare -A task_configs=(
-    ["llavabench_in_the_wild"]="./Data/llava/eval/llava-bench-in-the-wild/conversations/conversations.json|./Data/llava/eval/llava-bench-in-the-wild/images/"
-    ["gqa"]="./Data/llava/eval/gqa/conversations.json|./Data/llava/eval/gqa/images"
-    ["vqav2"]="./Data/llava/eval/vqav2/conversations.json|./Data/llava/eval/vqav2/images"
-    ["vizwiz"]="./Data/llava/eval/vizwiz/conversations.json|./Data/llava/eval/vizwiz/images"
-    ["textvqa"]="./Data/llava/eval/textvqa/conversations.json|./Data/llava/eval/textvqa/images"
-    ["sqa"]="./Data/llava/eval/scienceqa/conversations.json|./Data/llava/eval/scienceqa/images"
-    ["pope"]="./Data/llava/eval/pope/conversations.json|./Data/llava/eval/pope/images"
-    ["mmbench"]="./Data/llava/eval/mmbench/conversations/mmbench_dev_en.json|./Data/llava/eval/mmbench/images"
-    ["mmbench_cn"]="./Data/llava/eval/mmbench/conversations/mmbench_dev_cn.json|./Data/llava/eval/mmbench/images"
+    ["llavabench_in_the_wild"]="${data_path}/llava-bench-in-the-wild/conversations/conversations.json|${data_path}/llava-bench-in-the-wild/images/"
+    ["gqa"]="${data_path}/gqa/conversations.json|${data_path}/gqa/images"
+    ["vqav2"]="${data_path}/vqav2/conversations.json|${data_path}/vqav2/images"
+    ["vizwiz"]="${data_path}/vizwiz/conversations.json|${data_path}/vizwiz/images"
+    ["textvqa"]="${data_path}/textvqa/conversations.json|${data_path}/textvqa/images"
+    ["sqa"]="${data_path}/scienceqa/conversations.json|${data_path}/scienceqa/images"
+    ["pope"]="${data_path}/pope/conversations.json|${data_path}/pope/images"
+    ["mmbench"]="${data_path}/mmbench/conversations/mmbench_dev_en.json|${data_path}/mmbench/images"
+    ["mmbench_cn"]="${data_path}/mmbench/conversations/mmbench_dev_cn.json|${data_path}/mmbench/images"
 )
 
 for task in "${!task_configs[@]}"; do
     IFS='|' read -r val_file image_folder <<< "${task_configs[$task]}"
-    base_output_path="./output/val_gradient/${task}-${current_date}-ckpt${checkpoint}"
+    base_output_path="./output/val_gradient/${current_date}/${task}"
     
     echo "Processing task: $task"
     
@@ -35,7 +29,7 @@ for task in "${!task_configs[@]}"; do
         mkdir -p $base_output_path
     fi
 
-    CUDA_VISIBLE_DEVICES=0 python3 icons/get_info.py \
+    CUDA_VISIBLE_DEVICES=0 python3 icons/obtain_info.py \
         --train_file "$val_file" \
         --task "$task" \
         --info_type grads \
@@ -46,13 +40,13 @@ for task in "${!task_configs[@]}"; do
         --image_folder "$image_folder"
 done
 
-# Special handling for MME
-echo "Processing MME tasks..."
-base_output_path="./output/val_gradient/mme-${current_date}-ckpt${checkpoint}"
-base_val_path="./Data/llava/eval/MME/target_task/val_set"
-mme_image_folder="./Data/llava/eval/MME/MME_Benchmark_release_version"
 
-# Array of MME validation files and corresponding tasks
+echo "Processing MME tasks..."
+base_output_path="./output/val_gradient/${current_date}/mme"
+base_val_path="${data_path}/MME/target_task/val_set"
+mme_image_folder="${data_path}/MME/MME_Benchmark_release_version"
+
+
 declare -A mme_tasks=(
     ["landmark"]="landmark"
     ["celebrity"]="celebrity"
@@ -80,7 +74,7 @@ for val_file_name in "${!mme_tasks[@]}"; do
         mkdir -p $output_path
     fi
 
-    python3 icons/get_info.py \
+    python3 icons/obtain_info.py \
         --train_file "$val_file" \
         --task "$task" \
         --info_type grads \

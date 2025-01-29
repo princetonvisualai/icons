@@ -85,18 +85,23 @@ The ICONS pipeline consists of two main stages:
 1. **Compute Training Data Gradients**
    ```bash
    # Submit SLURM jobs for processing training data chunks
-   sbatch './scripts/0_slurm_train_grads.sh' 500  # or use other checkpoints, here we use ckpt=500 as an example
+   sbatch './scripts/0_slurm_train_grads.sh' 500  # or use other checkpoints, here we use the warmed-up model which is trained after 500 steps.
    ```
 
 2. **Merge Gradient Files**
    ```bash
-   bash ./scripts/1_merge_train_gradient.sh
+   bash ./scripts/1_merge_train_gradient.sh # This should only take a few minutes (<10 mins).
    ```
 
 3. **Process Validation Data**
    ```bash
    bash ./scripts/2_get_val_data_grads_all.sh
    ```
+   Alternatively, if you have access to a SLURM-enabled system, you can run:
+   ```bash
+   sbatch ./scripts/2_slurm_get_val_data_grads.sh 
+   ```
+   remember to specify the model path and data path.
 
 4. **Compute Influence Matrices**
    ```bash

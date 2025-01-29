@@ -2,11 +2,11 @@
 import os
 import sys
 
-def check_missing_chunks(base_dir):
+def check_missing_chunks(base_dir, max_chunks=2000):
     missing_files_chunks = []
     missing_chunks = []
 
-    for chunk_id in range(1, 2001):
+    for chunk_id in range(1, max_chunks + 1):
         chunk_dir = os.path.join(base_dir, f"chunk_{chunk_id}/dim5120")
         if os.path.isdir(chunk_dir):
             file_path = os.path.join(chunk_dir, "all_normalized.pt")
@@ -36,8 +36,10 @@ def check_missing_chunks(base_dir):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python 0_missing_chunks.py <base_directory>")
+    if len(sys.argv) < 2 or len(sys.argv) > 3:
+        print("Usage: python 0_missing_chunks.py <base_directory> [max_chunks]")
         sys.exit(1)
+    
     base_dir = sys.argv[1]
-    check_missing_chunks(base_dir)
+    max_chunks = 2000 if len(sys.argv) < 3 else int(sys.argv[2])
+    check_missing_chunks(base_dir, max_chunks)

@@ -9,7 +9,6 @@ from tqdm import tqdm
 
 def load_tensor(file_path):
     try:
-        # Explicitly load to CPU and use memory mapping
         return torch.load(file_path, map_location='cpu', mmap=True)
     except Exception as e:
         print(f"Error loading tensor from {file_path}: {e}")
@@ -21,10 +20,8 @@ def merge_tensors(base_dir, output_file_name, chunk_size=5, data_per_chunk=3326)
     temp_dir = os.path.join(base_dir, "temp_merge_chunks")
     os.makedirs(temp_dir, exist_ok=True)
 
-    # Get and sort all subdirectories
     subdirs = [os.path.join(base_dir, subdir) for subdir in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, subdir))]
     
-    # Filter and sort subdirectories
     valid_subdirs = []
     for subdir in subdirs:
         try:
@@ -35,7 +32,6 @@ def merge_tensors(base_dir, output_file_name, chunk_size=5, data_per_chunk=3326)
     
     valid_subdirs.sort(key=lambda x: int(os.path.basename(x).split('_')[-1]))
 
-    # Collect all file paths in sorted order
     all_files = []
     chunk_numbers = []
     for subdir in valid_subdirs:
@@ -44,7 +40,7 @@ def merge_tensors(base_dir, output_file_name, chunk_size=5, data_per_chunk=3326)
         for root, _, files in os.walk(subdir):
             files.sort()
             for file in files:
-                if file == "all_normalized.pt":  # Only consider 'all_normalized.pt'
+                if file == "all_normalized.pt":  
                     file_path = os.path.join(root, file)
                     all_files.append(file_path)
                     chunk_numbers.append(chunk_number)
@@ -55,10 +51,9 @@ def merge_tensors(base_dir, output_file_name, chunk_size=5, data_per_chunk=3326)
 
     print(f"Total files found: {len(all_files)}")
 
-    # Load and merge data in order using a thread pool
     merged_data = []
     chunk_count = 0
-    with ThreadPoolExecutor(max_workers=4) as executor:  # Limit number of parallel loads
+    with ThreadPoolExecutor(max_workers=4) as executor:  #
         futures = {executor.submit(load_tensor, file_path): file_path for file_path in all_files}
         with open(id_file, 'w') as idf:
             for i, future in enumerate(tqdm(as_completed(futures), total=len(futures), desc="Merging files")):
@@ -67,9 +62,8 @@ def merge_tensors(base_dir, output_file_name, chunk_size=5, data_per_chunk=3326)
                     print(f"Skipping file {all_files[i]} due to loading error.")
                     continue
 
-                merged_data.append(data.cpu())  # Ensure data is on CPU
+                merged_data.append(data.cpu())  
 
-                # Write IDs to the text file
                 chunk_number = chunk_numbers[i]
                 for j in range(data.shape[0]):
                     idf.write(f"{(chunk_number - 1) * data_per_chunk + j + 1}\n")
@@ -80,11 +74,9 @@ def merge_tensors(base_dir, output_file_name, chunk_size=5, data_per_chunk=3326)
                     torch.save(merged_chunk, chunk_file)
                     chunk_count += 1
                     merged_data = []
-                    # Force garbage collection
                     del merged_chunk
                     gc.collect()
-                    torch.cuda.empty_cache()  # Clear GPU memory if any
-
+                    torch.cuda.empty_cache()  
     if merged_data:
         merged_chunk = torch.cat(merged_data, dim=0)
         chunk_file = os.path.join(temp_dir, f"chunk_{chunk_count}.pt")
@@ -93,7 +85,6 @@ def merge_tensors(base_dir, output_file_name, chunk_size=5, data_per_chunk=3326)
 
     print(f"Saved IDs to {id_file}")
 
-    # Instead of combining chunks at the end, save them directly as final chunks
     save_dir = os.path.join(base_dir, output_file_name.replace('.pt', '_chunks'))
     os.makedirs(save_dir, exist_ok=True)
     
