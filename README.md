@@ -90,7 +90,7 @@ The ICONS pipeline consists of two main stages:
 
 2. **Merge Gradient Files**
    ```bash
-   bash ./scripts/1_merge_train_gradient.sh # This should only take a few minutes (<10 mins).
+   bash ./scripts/1_merge_train_gradient.sh
    ```
 
 3. **Process Validation Data**

@@ -1,11 +1,11 @@
 #!/bin/bash
 
+
 process_folder() {
     local BASE_DIR="$1"
-    local MAX_CHUNKS="$2"
     
     echo "Checking for missing chunks in $BASE_DIR..."
-    python icons/missing_chunks.py "$BASE_DIR" "$MAX_CHUNKS"
+    python ./icons/missing_chunks.py "$BASE_DIR"
     
     if [ -f "missing_files_chunks.txt" ] && [ -s "missing_files_chunks.txt" ] || \
        [ -f "missing_chunks.txt" ] && [ -s "missing_chunks.txt" ]; then
@@ -23,12 +23,10 @@ process_folder() {
 }
 
 read -p "Multiple folders or single folder? (m/s): " FOLDER_CHOICE
-read -p "Enter the maximum number of chunks to check (default: 200): " MAX_CHUNKS
-MAX_CHUNKS=${MAX_CHUNKS:-200}
 
 if [[ $FOLDER_CHOICE == "s" ]]; then
     read -p "Enter the BASE_DIR for merging the training gradient: " BASE_DIR
-    process_folder "$BASE_DIR" "$MAX_CHUNKS"
+    process_folder "$BASE_DIR"
 elif [[ $FOLDER_CHOICE == "m" ]]; then
     read -p "Enter the path to the parent directory containing all folders: " PARENT_DIR
     
@@ -36,7 +34,7 @@ elif [[ $FOLDER_CHOICE == "m" ]]; then
     
     echo "Processing folders in parallel..."
     for DIR in $SUBDIRS; do
-        process_folder "$DIR" "$MAX_CHUNKS" &
+        process_folder "$DIR" &
     done
     
     wait
