@@ -18,7 +18,6 @@
 
 **ICONS: Influence Consensus for Vision-Language Data Selection**
 
-Under construction 🚧
 
 [[paper](https://arxiv.org/abs/2501.00654)][[website](https://princetonvisualai.github.io/icons/)][[dataset](https://huggingface.co/datasets/xindiw/LLAVA-ICONS-133K)]
 
